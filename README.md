@@ -468,6 +468,11 @@ ANALYZE COMPRESSION tbl;
 
 ## Glue Spark <a name="glue-spark"></a>
 
+Python scripts:
+  - **[Glue jobs](glue_jobs.py)**
+  - **[Glue partitions](glue_partitions.py)**
+
+
 | Action                          | Code                                                                           |
 | ------------------------------- | ------------------------------------------------------------------------------ |
 | Rename field                    | `newDyF = oldDyF.rename_field("old_name", "new_name")`                         |

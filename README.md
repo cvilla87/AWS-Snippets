@@ -1,23 +1,23 @@
 # AWS Snippets
 
 1. [AWS CLI](#awscli)
-    1. General
-    2. S3
-2. [S3 - Python SDK](#s3)
-    1. [Boto3 - Resource](#s3resource)
-    2. [Boto3 - Client](#s3client)
-    3. [Other snippets](#s3snippets)
+    1. [General](#general)
+    2. [S3](#s3)
+2. [S3 - Python SDK](#s3-boto3)
+    1. [Boto3 - Resource](#s3-resource)
+    2. [Boto3 - Client](#s3-client)
+    3. [Other snippets](#s3-snippets)
 3. [Lambda functions](#lambda)
 4. [Redshift](#redshift)
-    1. Metadata Tables
-    2. Snippets
-5. [Glue Spark](#gluespark)
-6. [Glue Data Catalog](#gluecatalog)
+    1. [Metadata Tables](#metadata-tables)
+    2. [Snippets](redshift-snippets)
+5. [Glue Spark](#glue-spark)
+6. [Glue Data Catalog](#glue-catalog)
 
 
 ## AWS CLI <a name="awscli"></a>
 
-### General
+### General <a name="general"></a>
 
 | Action                                        | Code                                                          |
 | --------------------------------------------- | ------------------------------------------------------------- |
@@ -31,14 +31,12 @@
 | Actions for specific profile                  | `aws s3 ls --profile prod`                                    |
 
 
-### S3
+### S3 <a name="s3"></a>
 
 | Action                                   | Code                                                                                                                     |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | List files from S3                       | `aws s3 ls s3://mybucket/path/to/folder/`                                                                                |
 | List files recursively from S3           | `aws s3 ls s3://mybucket/path/to/folder/ --recursive`                                                                    |
-| Read partially a file                    | `aws s3 cp s3://mybucket/path/to/file.txt - | head`                                                                      |
-| Get disk space used for S3 path          | `aws s3 ls --summarize --human-readable --recursive s3://mybucket/path/to/folder/ --profile=name | tail -2`              |
 | Copy S3 object (folder or file)          | `aws s3 cp s3://mybucket/path/to/file1 s3://mybucket/path/to/file2`                                                      |
 | Delete recursively S3 objects            | `aws s3 rm --recursive s3://mybucket/path/to/folder/ --exclude "*2020-08*"`                                              |
 | Delete recursively only some S3 objects  | `aws s3 rm --recursive s3://mybucket/path/to/folder/ --exclude "*" --include "*2021-05-14*"`                             |
@@ -51,6 +49,12 @@
 | Sync S3 folders excluding folder         | `aws s3 sync ./folder/ s3://mybucket/path/to/folder/ --exclude "*folder1/*"`                                             |
 | Sync S3 folders with ACL                 | `aws s3 sync s3://mybucket/path/to/folder1/ s3://mybucket/path/to/folder2/ --acl bucket-owner-full-control --sse AES256` |
 
+Read partially a file:  
+`aws s3 cp s3://mybucket/path/to/file.txt - | head`
+
+Get disk space used for S3 path:  
+`aws s3 ls --summarize --human-readable --recursive s3://mybucket/path/to/folder/ --profile=name | tail -2`  
+
 Both `cp` and `sync` commands can be used in the following combinations:
 - `<LocalPath> <S3Uri>`
 - `<S3Uri> <LocalPath>`
@@ -60,9 +64,9 @@ Both `cp` and `sync` commands can be used in the following combinations:
 
 
 
-## S3 - Python SDK (Boto3) <a name="s3"></a>
+## S3 - Python SDK (Boto3) <a name="s3-boto3"></a>
 
-### Boto3 - Resource <a name="s3resource"></a>
+### Boto3 - Resource <a name="s3-resource"></a>
 Resources represent an object-oriented interface to Amazon Web Services (AWS). They provide a higher-level abstraction than the raw, low-level calls made by service clients.  
 To use resources, you invoke the `resource()` method of a `Session` and pass in a service name: `s3 = boto3.resource('s3')`  
 
@@ -82,7 +86,7 @@ To use resources, you invoke the `resource()` method of a `Session` and pass in 
 | Copy a file              | `src = {'Bucket': bucket_name, 'Key': 'local_path/to/file.txt'}`<br>`bucket.copy(src, 'remote_path/to/file.txt')`                      |
 
 
-### Boto3 - Client <a name="s3client"></a>
+### Boto3 - Client <a name="s3-client"></a>
 Clients provide a low-level interface to AWS whose methods map close to 1:1 with service APIs. All service operations are supported by clients.  
 They are created in a similar fashion to resources: `s3 = boto3.client('s3')`  
 
@@ -98,7 +102,7 @@ They are created in a similar fashion to resources: `s3 = boto3.client('s3')`
 | Delete file         | `s3.delete_object('bucket_name', 'remote_path/to/file.txt')`                                                                           |
 
 
-### Other snippets <a name="s3snippets"></a>
+### Other snippets <a name="s3-snippets"></a>
 **Read S3 objects**  
 ```python
 import s3fs
@@ -183,7 +187,7 @@ https://developer.webex.com/docs/api/guides/webhooks
 
 ## Redshift <a name="redshift"></a>
 
-### Metadata Tables  
+### Metadata Tables <a name="metadata-tables"></a>
 
 | Table                                          | Query                                                                                                           |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -208,7 +212,7 @@ https://developer.webex.com/docs/api/guides/webhooks
 
 
 
-### Snippets
+### Snippets <a name="redshift-snippets"></a>
 
 **Schema per user**  
 ```sql
@@ -443,7 +447,7 @@ ANALYZE COMPRESSION tbl;
 
 
 
-## Glue Spark <a name="gluespark"></a>
+## Glue Spark <a name="glue-spark"></a>
 
 | Action                          | Code                                                                           |
 | ------------------------------- | ------------------------------------------------------------------------------ |
@@ -484,7 +488,7 @@ glueContext.write_dynamic_frame.from_options(frame = people_df,
 
 
 
-### Glue Data Catalog <a name="gluecatalog"></a>
+### Glue Data Catalog <a name="glue-catalog"></a>
 
 Prerequisites:  
 ```

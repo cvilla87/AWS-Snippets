@@ -375,12 +375,14 @@ null
 **Duplicates tables**  
 
 1) **Using CTAS**  
+
 By doing it this way, `new_table` inherits ONLY the basic column definitions, null settings and default values of the `original_table`. It does not inherit table attributes.
 ```sql
 CREATE TABLE new_table AS SELECT * FROM original_table;
 ```
 
 2) **CREATE TABLE LIKE**  
+
 To inherit all table definitions, use **deep copy** method, which recreates and repopulates a table by using a bulk insert, which automatically sorts the table.
 ```sql
 CREATE TABLE new_table (LIKE original_table);
@@ -398,6 +400,7 @@ ALTER TABLE new_table RENAME TO original_table;
 ```
 
 4) **Create temporary table**  
+
 If you need to retain the primary key and foreign key attributes of the parent table, or if the parent table has dependencies, you can use `CREATE TABLE ... AS (CTAS)` to create a temporary table, then truncate the original table and populate it from the temporary table.   
 
 Using a temporary table improves performance significantly compared to using a permanent table, but there is a risk of losing data.  

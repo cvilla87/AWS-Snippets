@@ -284,9 +284,9 @@ With `INCLUDE`, the column indicated in the `PARTITION BY` will also be included
 ```
 {
   "entries": [
-    {"url":"s3://bucket/file_0000_part_00", "meta": { "content_length": 32295, "record_count": 10 }},
-    {"url":"s3://bucket/file_0001_part_00", "meta": { "content_length": 32771, "record_count": 20 }},
-    {"url":"s3://bucket/file_0002_part_00", "meta": { "content_length": 32302, "record_count": 10 }}
+    {"url":"s3://bucket/file_0000", "meta": { "content_length": 32295, "record_count": 10 }},
+    {"url":"s3://bucket/file_0001", "meta": { "content_length": 32771, "record_count": 20 }},
+    {"url":"s3://bucket/file_0002", "meta": { "content_length": 32302, "record_count": 10 }}
   ],
   "schema": {
     "elements": [

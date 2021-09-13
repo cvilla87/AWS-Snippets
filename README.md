@@ -10,7 +10,7 @@
 3. [Lambda functions](#lambda)
 4. [Redshift](#redshift)
     1. [Metadata Tables](#metadata-tables)
-    2. [Snippets](redshift-snippets)
+    2. [Snippets](#redshift-snippets)
 5. [Glue Spark](#glue-spark)
 6. [Glue Data Catalog](#glue-catalog)
 
@@ -53,7 +53,7 @@ Read partially a file:
 `aws s3 cp s3://mybucket/path/to/file.txt - | head`
 
 Get disk space used for S3 path:  
-`aws s3 ls --summarize --human-readable --recursive s3://mybucket/path/to/folder/ --profile=name | tail -2`  
+`aws s3 ls --summarize --human-readable --recursive s3://mybucket/path/to/folder/ | tail -2`  
 
 Both `cp` and `sync` commands can be used in the following combinations:
 - `<LocalPath> <S3Uri>`

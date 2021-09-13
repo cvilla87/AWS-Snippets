@@ -67,8 +67,12 @@ Both `cp` and `sync` commands can be used in the following combinations:
 ## S3 - Python SDK (Boto3) <a name="s3-boto3"></a>
 
 ### Boto3 - Resource <a name="s3-resource"></a>
-Resources represent an object-oriented interface to Amazon Web Services (AWS). They provide a higher-level abstraction than the raw, low-level calls made by service clients.  
-To use resources, you invoke the `resource()` method of a `Session` and pass in a service name: `s3 = boto3.resource('s3')`  
+Resources represent an object-oriented interface to Amazon Web Services (AWS).  
+They provide a higher-level abstraction than the raw, low-level calls made by service clients.  
+
+To use resources, you invoke the `resource()` method of a `Session` and pass in a service name:  
+`s3 = boto3.resource('s3')`  
+
 
 | Action                   | Code                                                                                                                                   |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -87,8 +91,11 @@ To use resources, you invoke the `resource()` method of a `Session` and pass in 
 
 
 ### Boto3 - Client <a name="s3-client"></a>
-Clients provide a low-level interface to AWS whose methods map close to 1:1 with service APIs. All service operations are supported by clients.  
+Clients provide a low-level interface to AWS whose methods map close to 1:1 with service APIs.  
+All service operations are supported by clients.  
+
 They are created in a similar fashion to resources: `s3 = boto3.client('s3')`  
+
 
 | Action              | Code                                                                                                                                   |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -235,7 +242,8 @@ select convert(integer, pricepaid) from sales;
 
 
 **Execute statements from command line**  
-We need to install `psql`, a terminal-based front end from PostgreSQL.   
+We need to install `psql`, a terminal-based front end from PostgreSQL.  
+
 Then we can run just one statement using:  
 `psql "host=<host> user=<user> dbname=<dbname> port=5439 password=<pass>" -c "SELECT * FROM schema.table1 where field ='<name>';"`
 
@@ -276,9 +284,9 @@ With `INCLUDE`, the column indicated in the `PARTITION BY` will also be included
 ```
 {
   "entries": [
-    {"url":"s3://mybucket/venue_pipe_0000_part_00", "meta": { "content_length": 32295, "record_count": 10 }},
-    {"url":"s3://mybucket/venue_pipe_0001_part_00", "meta": { "content_length": 32771, "record_count": 20 }},
-    {"url":"s3://mybucket/venue_pipe_0002_part_00", "meta": { "content_length": 32302, "record_count": 10 }}
+    {"url":"s3://bucket/file_0000_part_00", "meta": { "content_length": 32295, "record_count": 10 }},
+    {"url":"s3://bucket/file_0001_part_00", "meta": { "content_length": 32771, "record_count": 20 }},
+    {"url":"s3://bucket/file_0002_part_00", "meta": { "content_length": 32302, "record_count": 10 }}
   ],
   "schema": {
     "elements": [
@@ -342,7 +350,11 @@ Some interesting options to mention:
 
 **INT fields - Working with empty strings**  
 Errors like `pg.InternalError: ERROR: Invalid digit, Value ' ', Pos 0, Type: Integer` can appear when trying to load empty strings to INT fields.  
-To avoid this, you can use `NULLIF` to ensure that empty strings are always returned as nulls. This expression compares two arguments and returns null if the arguments are equal. If they are not equal, the first argument is returned. This expression is the inverse of the NVL or COALESCE expression.
+
+To avoid this, you can use `NULLIF` to ensure that empty strings are always returned as nulls.  
+This expression compares two arguments and returns null if the arguments are equal.  
+If they are not equal, the first argument is returned.  
+This expression is the inverse of the `NVL` or `COALESCE` expression.
 
 This line should be enough: `NULLIF(max_age,'')::integer`
 
@@ -386,8 +398,11 @@ ALTER TABLE new_table RENAME TO original_table;
 ```
 
 4) **Create temporary table**  
-If you need to retain the primary key and foreign key attributes of the parent table, or if the parent table has dependencies, you can use `CREATE TABLE ... AS (CTAS)` to create a temporary table, then truncate the original table and populate it from the temporary table.  
-Using a temporary table improves performance significantly compared to using a permanent table, but there is a risk of losing data. A temporary table is automatically dropped at the end of the session in which it is created. `TRUNCATE` commits immediately, even if it is inside a transaction block. If the `TRUNCATE` succeeds but the session terminates before the subsequent `INSERT` completes, the data is lost. If data loss is unacceptable, use a permanent table.
+If you need to retain the primary key and foreign key attributes of the parent table, or if the parent table has dependencies, you can use `CREATE TABLE ... AS (CTAS)` to create a temporary table, then truncate the original table and populate it from the temporary table.   
+
+Using a temporary table improves performance significantly compared to using a permanent table, but there is a risk of losing data.  
+
+A temporary table is automatically dropped at the end of the session in which it is created. `TRUNCATE` commits immediately, even if it is inside a transaction block. If the `TRUNCATE` succeeds but the session terminates before the subsequent `INSERT` completes, the data is lost. If data loss is unacceptable, use a permanent table.
 ```sql
 CREATE TEMP TABLE new_table AS SELECT * FROM original_table;
 TRUNCATE original_table;
@@ -398,7 +413,8 @@ DROP TABLE new_table;
 
 **VACUUM**  
 Re-sorts rows and reclaims space in either a specified table or all tables in the current database.  
-Warning: Only the table owner or a superuser can effectively vacuum a table. If VACUUM is run without the necessary table privileges, the operation completes successfully but has no effect.
+
+*Warning*: Only the table owner or a superuser can effectively vacuum a table. If VACUUM is run without the necessary table privileges, the operation completes successfully but has no effect.
 
 ```sql
 VACUUM tbl;
@@ -491,7 +507,7 @@ glueContext.write_dynamic_frame.from_options(frame = people_df,
 ### Glue Data Catalog <a name="glue-catalog"></a>
 
 Prerequisites:  
-```
+```python
 glue_client = boto3.client('glue')
 cloudwatch = boto3.client('logs')
 ```
